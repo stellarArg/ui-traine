@@ -8,20 +8,13 @@ import {
     sortCountry
 } from '../../actions/country'
 
-import keys from 'lodash/keys';
-import head from 'lodash/head';
-
 class App extends PureComponent {
-    constructor(props) {
-        super(props);
-    }
-
     componentDidMount() {
         this.props.getCountries();
     }
 
     render() {
-        const {countries, loading, tableProps, onSort} = this.props;
+        const {countries, tableProps, onSort} = this.props;
         return (
             <div>
                 <h3>Tabla de datos </h3>

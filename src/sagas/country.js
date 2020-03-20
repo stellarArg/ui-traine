@@ -8,10 +8,11 @@ import {
     fetchCountriesSucceeded
 } from '../actions/country';
 
-export function* fetchCountries() {
+export function* fetchCountries({filter}) {
     try {
         const countries = yield call(
-            CountryAPI.fetch
+            CountryAPI.fetch,
+            filter
         );
         yield put(
             fetchCountriesSucceeded(countries)
