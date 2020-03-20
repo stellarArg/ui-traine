@@ -1,8 +1,12 @@
 import React, {PureComponent} from 'react';
-import Table from '../components/table';
+import Table from '../../components/table';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 
-import {fetchCountriesRequested} from '../actions/country'
+import {
+    fetchCountriesRequested,
+    sortCountry
+} from '../../actions/country'
 
 import keys from 'lodash/keys';
 import head from 'lodash/head';
@@ -17,28 +21,30 @@ class App extends PureComponent {
     }
 
     render() {
-        const {countries, loading} = this.props;
+        const {countries, loading, tableProps, onSort} = this.props;
         return (
             <div>
                 <h3>Tabla de datos </h3>
+                <Link to="/country/edit/new"> Nuevo </Link>
                 <hr/>
-                {console.log(countries)}
-                <Table {...{data: countries, columns: keys(head(countries))}}/>
+                <Table {...{data: countries, ...tableProps, onSort: onSort}}/>
             </div>
         )
     }
 }
 
 const mapStateToProps = (state /* nuestro Store */, ownProps /*  */ ) => {
-    const {countries, loading} = state.country;
+    const {documents: {countries, loading}, tableProps} = state.country;
     return {
+        tableProps,
         countries,
         loading
     };
 }
 
 const mapDispatchToProps = (dispatch /* acciones a disparar */, ownProps /*  */ ) => ({
-    getCountries: () => dispatch(fetchCountriesRequested())
+    getCountries: () => dispatch(fetchCountriesRequested()),
+    onSort: sort => dispatch(sortCountry(sort))
 })
 
 export default connect(
