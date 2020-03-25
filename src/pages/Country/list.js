@@ -2,6 +2,13 @@ import React, {PureComponent} from 'react';
 import Table from '../../components/table';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
+import {
+    Container,
+    Button,
+    Row,
+    Col,
+    Spinner
+} from 'reactstrap';
 
 import {
     fetchCountriesRequested,
@@ -13,30 +20,65 @@ class App extends PureComponent {
         this.props.getCountries();
     }
 
+    handlePagination = (skip) => {
+        this.props.getCountries({skip});
+    } 
+
     render() {
-        const {countries, tableProps, onSort} = this.props;
+        const {
+            countries,
+            limit,
+            total,
+            tableProps,
+            onSort,
+            loading
+        } = this.props;
         return (
-            <div>
-                <h3>Tabla de datos </h3>
-                <Link to="/country/edit/new"> Nuevo </Link>
+            <Container>
+                <Row>
+                    <Col>
+                        <h3>Tabla de datos </h3>
+                    </Col>
+                    <Col sm="3">
+                        <Button color="primary" tag={Link} to="/country/edit/new"> Nuevo </Button>
+                    </Col>
+                </Row>
                 <hr/>
-                <Table {...{data: countries, ...tableProps, onSort: onSort}}/>
-            </div>
+                <Row>
+                    <Col>
+                        {loading && (
+                            <Spinner color="danger" />
+                        )}
+                        {!loading && (
+                            <Table {...{
+                                data: countries,
+                                ...tableProps,
+                                onSort,
+                                limit,
+                                total,
+                                onPageClick: this.handlePagination
+                            }}/>
+                        )}
+                    </Col>
+                </Row>
+            </Container>
         )
     }
 }
 
 const mapStateToProps = (state /* nuestro Store */, ownProps /*  */ ) => {
-    const {documents: {countries, loading}, tableProps} = state.country;
+    const {documents: {countries, limit, total, loading}, tableProps} = state.country;
     return {
         tableProps,
         countries,
+        limit,
+        total,
         loading
     };
 }
 
 const mapDispatchToProps = (dispatch /* acciones a disparar */, ownProps /*  */ ) => ({
-    getCountries: () => dispatch(fetchCountriesRequested()),
+    getCountries: filters => dispatch(fetchCountriesRequested(filters)),
     onSort: sort => dispatch(sortCountry(sort))
 })
 
