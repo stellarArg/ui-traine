@@ -4,19 +4,19 @@ import {connect} from 'react-redux';
 import Title from '../components/Title';
 import Table from '../components/Table';
 
-import {fetchCountryRequested} from '../actions/country';
+import {fetchPersonsRequested} from '../actions/persons';
 
-class Country extends Component {
+class Persons extends Component {
     async componentDidMount() {
-        this.props.requestCountry();
+        this.props.requestPersons();
     }
 
     render() {
         const {headers, documents} = this.props;
         return (
-            <div className="Country">
-                <header className="Country-header">
-                    <Title title="Hello Country" />
+            <div className="Persons">
+                <header className="persons-header">
+                    <Title title="Hello Persons" />
                     <div>
                         <Table {...{documents, headers}} />
                     </div>
@@ -37,14 +37,14 @@ class Country extends Component {
  // Recibe 2 parametros,  1) Nuestro Store / Reducer, 2) Son todas las propiedades que vienen por Herencias
  // o Por asignacion
 const mapStateToProps = state => ({
-    headers: state.country.headers,
-    documents: state.country.countries 
+    headers: state.persons.headers,
+    documents: state.persons.persons 
 });
 
  // Recibe 2 parametros,  1) Nuestro dispatcher o disparador de acciones,
  // 2) Son todas las propiedades que vienen por Herencias o Por asignacion
 const mapDispatchToProps = dispatch => ({
-    requestCountry: () => dispatch(fetchCountryRequested())
+    requestPersons: () => dispatch(fetchPersonsRequested())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Country);
+export default connect(mapStateToProps, mapDispatchToProps)(Persons);

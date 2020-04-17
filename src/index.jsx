@@ -6,15 +6,11 @@ import {Provider} from 'react-redux';
 
 import CreateStore from './store';
 
-import Country from './pages/Country'
-
 const store = CreateStore();
 
 ReactDOM.render(
     <Provider store={store}>
-        <App>
-            <Country/>
-        </App>
+        <App/>
     </Provider>
     ,
     document.getElementById('root')
