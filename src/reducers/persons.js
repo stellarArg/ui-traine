@@ -1,10 +1,18 @@
 import {
     FETCH_PERSONS_REQUESTED,
-    FETCH_PERSONS_SUCCEEDED
+    FETCH_PERSONS_SUCCEEDED,
+    UPDATE_PERSONS
 } from '../actions/persons'
 
 const initialState = {
     persons: [],
+    currentPersons: {
+        name: '',
+        surname: '',
+        email: '',
+        gender: '',
+        avatar: ''
+    },
     headers: [
         {
             label: 'Nombre',
@@ -31,6 +39,8 @@ export default (state = initialState, action) => {
             return {...state, persons: []};
         case FETCH_PERSONS_SUCCEEDED:
             return {...state, persons: action.persons};
+        case UPDATE_PERSONS:
+            return {...state, currentPersons: action.person};
         default:
             return {...state};
     }
