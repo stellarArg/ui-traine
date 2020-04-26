@@ -6,7 +6,7 @@ import React from 'react';
 // Pure Components
 
 const Title = ({ title }) => (
-	<h1> # {title} # </h1>
+	<h1 className="breadcrumb"> # {title} # </h1>
 );
 
 export default Title;

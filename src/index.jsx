@@ -4,6 +4,8 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {Provider} from 'react-redux';
 
+import 'bootstrap/scss/bootstrap.scss'
+
 import CreateStore from './store';
 
 const store = CreateStore();

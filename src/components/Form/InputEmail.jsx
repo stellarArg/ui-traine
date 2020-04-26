@@ -1,9 +1,10 @@
 import React from 'react';
+import {FormGroup, Label, Input} from 'reactstrap';
 
 const InputEmail = ({...props}) => (
-    <label>
-        {props.label && <div>{props.label}</div>}
-        <input
+    <FormGroup>
+        {props.label && <Label>{props.label}</Label>}
+        <Input
             type="email"
             {...props}
             /**
@@ -13,7 +14,7 @@ const InputEmail = ({...props}) => (
              * style ==> Nuestros Style
              */
         />
-    </label>
+    </FormGroup>
 );
 
 export default InputEmail;

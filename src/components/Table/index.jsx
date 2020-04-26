@@ -1,8 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {Table, Button, Media, ButtonGroup} from 'reactstrap';
 
-const Table = ({documents, headers, linkTo}) => (
-    <table>
+const TableComponent = ({documents, headers, linkTo, onDelete, primaryKey = 'id'}) => (
+    <Table striped bordered responsive>
         <thead>
             <tr>
                 {headers && headers.map(header => (<th>{header.label}</th>))}
@@ -13,13 +14,21 @@ const Table = ({documents, headers, linkTo}) => (
             {documents && headers && documents.map(document => (
                 <tr>
                     {headers.map(header => (
-                        <td> {document[header.key]}</td>
+                        <td>
+                            {header.media && (<Media src={document[header.key]}/>)}
+                            {!header.media && document[header.key]}
+                        </td>
                     ))}
-                    {linkTo && (<td> <Link to={`${linkTo}/${document.id}`}> Editar </Link> </td>)}
+                    <td>
+                        <ButtonGroup>
+                        {linkTo && (<Button size="sm" color="primary" tag={Link} to={`${linkTo}/${document[primaryKey]}`}> Editar </Button>)}
+                        {onDelete && (<Button size="sm" onClick={() => onDelete(document[primaryKey])}> Borrar </Button>)}
+                        </ButtonGroup>
+                    </td>
             </tr>
             ))}
         </tbody>
-    </table>
+    </Table>
 );
 
-export default Table;
+export default TableComponent;

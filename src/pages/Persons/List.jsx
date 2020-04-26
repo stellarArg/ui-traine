@@ -1,29 +1,39 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
+import {Container, Row, Col, Button} from 'reactstrap';
 
 import Title from '../../components/Title';
 import Table from '../../components/Table';
 
-import {fetchPersonsRequested} from '../../actions/persons';
+import {fetchPersonsRequested, deletePersonRequested} from '../../actions/persons';
 
 class Persons extends Component {
-    async componentDidMount() {
+    componentDidMount() {
         this.props.requestPersons();
     }
 
     render() {
         const {headers, documents} = this.props;
         return (
-            <div className="Persons">
-                <header className="persons-header">
-                    <Title title="Hello Persons" />
-                    <Link to='/persons/new'> Nueva Persona </Link>
-                    <div>
-                        <Table {...{documents, headers, linkTo: '/persons'}} />
-                    </div>
-                </header>
-            </div>
+            <Container>
+                <Row>
+                    <Col sm="8">
+                        <Title title="Hello Persons" />
+                    </Col>
+                    <Col sm="4" className="float-right mt-2">
+                        <Button tag={Link} color="warning" to='/persons/new'> Nueva Persona </Button>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Table
+                            {...{documents, headers, linkTo: '/persons'}}
+                            onDelete={id => this.props.deletePerson(id)}
+                        />
+                    </Col>
+                </Row>
+            </Container>
         );
     }
 }
@@ -46,7 +56,8 @@ const mapStateToProps = state => ({
  // Recibe 2 parametros,  1) Nuestro dispatcher o disparador de acciones,
  // 2) Son todas las propiedades que vienen por Herencias o Por asignacion
 const mapDispatchToProps = dispatch => ({
-    requestPersons: () => dispatch(fetchPersonsRequested())
+    requestPersons: () => dispatch(fetchPersonsRequested()),
+    deletePerson: id => dispatch(deletePersonRequested(id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Persons);

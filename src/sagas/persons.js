@@ -1,31 +1,7 @@
 import {call, put, select} from 'redux-saga/effects';
-import Axios from 'axios';
 
-import {fetchPersonsSucceeded, submitPersonSucceeded} from '../actions/persons';
-
-const apiCall = async () => {
-    const {data, status} = await Axios.get('http://localhost:3001/api/persons');
-    if (status !== 200) {
-        return [];
-    }
-    return data;
-}
-
-const apiSave = async person => {
-    try {
-        let result;
-        if (person.id) {
-            result = await Axios.put(`http://localhost:3001/api/persons/${person.id}`, person);
-        } else {
-            result = await Axios.post('http://localhost:3001/api/persons', person);
-        }
-
-        return result;
-    } catch (err) {
-        return {status: 500, data: null};
-    }
-    
-}
+import PersonsService from '../services/persons';
+import {fetchPersonsSucceeded, submitPersonSucceeded, fetchPersonSucceeded, deletePersonSucceeded} from '../actions/persons';
 
 /**
  *  Método call de sagas permite incluir la funcion separado por coma todos los parametros necesarios
@@ -34,15 +10,24 @@ const apiSave = async person => {
  * function(1, 2, 3, 4)
  * 
  */
-
 export function* fetchPersons({filter}) {
-    const persons = yield call(apiCall, filter);
+    const persons = yield call(PersonsService.apiCall, filter);
     yield put(fetchPersonsSucceeded(persons));
 }
 
-
 export function* submitPerson() {
     const {currentPersons} = yield select(state => state.persons);
-    const {status, data} = yield call(apiSave, currentPersons);
+    const {status, data} = yield call(PersonsService.apiSave, currentPersons);
     yield put(submitPersonSucceeded(status, data));
+}
+
+export function* fetchPerson({id}) {
+    const person = yield call(PersonsService.apiCallOne, id);
+    yield put(fetchPersonSucceeded(person));
+}
+
+export function* deletePerson({id}) {
+    yield call(PersonsService.apiDelete, id);
+    yield put(deletePersonSucceeded(true));
+    yield call(fetchPersons, {});
 }

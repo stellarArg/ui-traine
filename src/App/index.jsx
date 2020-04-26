@@ -1,9 +1,10 @@
 import React, {Fragment} from 'react';
 import {
-    BrowserRouter as Router,
+    HashRouter as Router,
     Switch,
     Route
-  } from "react-router-dom";
+} from "react-router-dom";
+import {Container, Row, Col} from 'reactstrap';
 
 import Header from './Header';
 import Footer from './Footer';
@@ -15,15 +16,22 @@ import Persons from '../pages/Persons';
 const Index = () => (
     <Fragment>
         <Router>
-            <Header/>
-            <main>
-                <Switch>
-                    <Route path="/persons" component={Persons}/>
-                    <Route path="/country" component={Country}/>
-                    <Route path="/" component={Home}/>
-                </Switch>
-            </main>
-            <Footer/>
+            <Container>
+                <Row>
+                    <Col>
+                        <Header/>
+                        <main>
+                            <Switch>
+                                <Route path="/persons" component={Persons}/>
+                                <Route path="/country" component={Country}/>
+                                <Route path="/" component={Home}/>
+                            </Switch>
+                        </main>
+                        <Footer/>
+                    </Col>
+                </Row>
+            </Container>
+
         </Router>
     </Fragment>
 );

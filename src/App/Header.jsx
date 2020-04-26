@@ -1,22 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Link} from 'react-router-dom'
 
-const Header = () => (
-    <header>
-        <nav>
-            <ul style={{listStyle: 'none', display: 'inline-block'}}>
-                <li>
-                    <Link to="/">Home</Link>
-                </li>
-                <li>
-                    <Link to="/country">Paises</Link>
-                </li>
-                <li>
-                    <Link to="/persons">Personas</Link>
-                </li>
-            </ul>
-        </nav>
-    </header>
-);
+import {
+    Collapse,
+    Navbar,
+    NavbarToggler,
+    NavbarBrand,
+    Nav,
+    NavItem,
+    NavLink
+  } from 'reactstrap';
+
+const Header = () =>  {
+    const [isOpen, setIsOpen] = useState(false);
+  
+    const toggle = () => setIsOpen(!isOpen);
+    return (
+        <header>
+            <Navbar color="dark" dark expand="md">
+                <NavbarBrand tag={Link} to="/">Home</NavbarBrand>
+                <NavbarToggler onClick={toggle} />
+                <Collapse isOpen={isOpen} navbar>
+                    <Nav className="mr-auto" navbar>
+                        <NavItem>
+                        <NavLink tag={Link} to="/country">Components</NavLink>
+                        </NavItem>
+                        <NavItem>
+                        <NavLink tag={Link} to="/persons">Personas</NavLink>
+                        </NavItem>
+                    </Nav>
+                </Collapse>
+            </Navbar>
+        </header>
+    );
+}
 
 export default Header;
